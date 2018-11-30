@@ -25,7 +25,6 @@ It uses a INI-style config file and the [scheduling format](https://godoc.org/gi
 - `job-local`: runs the command inside of the host running ofelia.
 - `job-service-run`: runs the command inside a new "run-once" service, for running inside a swarm
 
-
 ```ini
 [job-exec "job-executed-on-running-container"]
 schedule = @hourly
@@ -41,12 +40,15 @@ command = touch /tmp/example
 schedule = @hourly
 command = touch /tmp/example
 
-
 [job-service-run "service-executed-on-new-container"]
 schedule = 0,20,40 * * * *
 image = ubuntu
 network = swarm_network
 command =  touch /tmp/example
+
+[job-service-run "job-executed-on-existing-service"]
+schedule = 0,20,40 * * * *
+service =  my-service
 ```
 
 ### Logging
@@ -78,7 +80,7 @@ command =  touch /tmp/example
 The easiest way to deploy **ofelia** is using *Docker*.
 
 ```sh
-docker run -it -v /etc/ofelia:/etc/ofelia mcuadros/ofelia:latest
+docker run -it -v /etc/ofelia:/etc/ofelia -v /var/run/docker.sock:/var/run/docker.sock:ro mcuadros/ofelia:latest
 ```
 
 Don't forget to place your `config.ini` at your host machine.
