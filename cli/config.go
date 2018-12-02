@@ -10,19 +10,25 @@ import (
 	"gopkg.in/gcfg.v1"
 )
 
-const logFormat = "%{color}%{shortfile} ▶ %{level}%{color:reset} %{message}"
+const (
+	logFormat     = "%{color}%{shortfile} ▶ %{level}%{color:reset} %{message}"
+	jobExec       = "job-exec"
+	jobRun        = "job-run"
+	jobServiceRun = "job-service-run"
+	jobLocal      = "job-local"
+)
 
 // Config contains the configuration
 type Config struct {
 	Global struct {
-		middlewares.SlackConfig
-		middlewares.SaveConfig
-		middlewares.MailConfig
+		middlewares.SlackConfig `mapstructure:",squash"`
+		middlewares.SaveConfig  `mapstructure:",squash"`
+		middlewares.MailConfig  `mapstructure:",squash"`
 	}
-	ExecJobs    map[string]*ExecJobConfig    `gcfg:"job-exec"`
-	RunJobs     map[string]*RunJobConfig     `gcfg:"job-run"`
-	ServiceJobs map[string]*RunServiceConfig `gcfg:"job-service-run"`
-	LocalJobs   map[string]*LocalJobConfig   `gcfg:"job-local"`
+	ExecJobs    map[string]*ExecJobConfig    `gcfg:"job-exec" mapstructure:",squash"`
+	RunJobs     map[string]*RunJobConfig     `gcfg:"job-run" mapstructure:",squash"`
+	ServiceJobs map[string]*RunServiceConfig `gcfg:"job-service-run" mapstructure:",squash"`
+	LocalJobs   map[string]*LocalJobConfig   `gcfg:"job-local" mapstructure:",squash"`
 }
 
 // BuildFromFile buils a scheduler using the config from a file
@@ -116,11 +122,11 @@ func (c *Config) buildSchedulerMiddlewares(sh *core.Scheduler) {
 
 // ExecJobConfig contains all configuration params needed to build a ExecJob
 type ExecJobConfig struct {
-	core.ExecJob
-	middlewares.OverlapConfig
-	middlewares.SlackConfig
-	middlewares.SaveConfig
-	middlewares.MailConfig
+	core.ExecJob              `mapstructure:",squash"`
+	middlewares.OverlapConfig `mapstructure:",squash"`
+	middlewares.SlackConfig   `mapstructure:",squash"`
+	middlewares.SaveConfig    `mapstructure:",squash"`
+	middlewares.MailConfig    `mapstructure:",squash"`
 }
 
 func (c *ExecJobConfig) buildMiddlewares() {
@@ -130,21 +136,21 @@ func (c *ExecJobConfig) buildMiddlewares() {
 	c.ExecJob.Use(middlewares.NewMail(&c.MailConfig))
 }
 
-// RunJobConfig contains all configuration params needed to build a RunJob
+// RunServiceConfig contains all configuration params needed to build a RunJob
 type RunServiceConfig struct {
-	core.RunServiceJob
-	middlewares.OverlapConfig
-	middlewares.SlackConfig
-	middlewares.SaveConfig
-	middlewares.MailConfig
+	core.RunServiceJob        `mapstructure:",squash"`
+	middlewares.OverlapConfig `mapstructure:",squash"`
+	middlewares.SlackConfig   `mapstructure:",squash"`
+	middlewares.SaveConfig    `mapstructure:",squash"`
+	middlewares.MailConfig    `mapstructure:",squash"`
 }
 
 type RunJobConfig struct {
-	core.RunJob
-	middlewares.OverlapConfig
-	middlewares.SlackConfig
-	middlewares.SaveConfig
-	middlewares.MailConfig
+	core.RunJob               `mapstructure:",squash"`
+	middlewares.OverlapConfig `mapstructure:",squash"`
+	middlewares.SlackConfig   `mapstructure:",squash"`
+	middlewares.SaveConfig    `mapstructure:",squash"`
+	middlewares.MailConfig    `mapstructure:",squash"`
 }
 
 func (c *RunJobConfig) buildMiddlewares() {
@@ -156,11 +162,11 @@ func (c *RunJobConfig) buildMiddlewares() {
 
 // LocalJobConfig contains all configuration params needed to build a RunJob
 type LocalJobConfig struct {
-	core.LocalJob
-	middlewares.OverlapConfig
-	middlewares.SlackConfig
-	middlewares.SaveConfig
-	middlewares.MailConfig
+	core.LocalJob             `mapstructure:",squash"`
+	middlewares.OverlapConfig `mapstructure:",squash"`
+	middlewares.SlackConfig   `mapstructure:",squash"`
+	middlewares.SaveConfig    `mapstructure:",squash"`
+	middlewares.MailConfig    `mapstructure:",squash"`
 }
 
 func (c *LocalJobConfig) buildMiddlewares() {
