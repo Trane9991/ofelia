@@ -18,6 +18,8 @@ const (
 	jobLocal      = "job-local"
 )
 
+var IsDockerEnv bool
+
 // Config contains the configuration
 type Config struct {
 	Global struct {

@@ -60,7 +60,36 @@ service =  my-service
 
 #### Docker labels configurations
 
-This ne
+In order to use this type of configurations, ofelia need access to docker socket.
+
+```sh
+docker run -it --rm \
+    -v /var/run/docker.sock:/var/run/docker.sock:ro \
+    --label ofelia.job-local.my-test-job.schedule="@every 5s" \
+    --label ofelia.job-local.my-test-job.command="date" \
+        mcuadros/ofelia:latest daemon --docker
+```
+
+Labels format: `ofelia.<JOB_TYPE>.<JOB_NAME>.<JOB_PARAMETER>=<PARAMETER_VALUE>.
+This type of configuration supports all the capabilities provided by INI files.
+
+Also, it is possible to configure `job-exec` by setting labels configurations on the target container. To do that, additional label `ofelia.enabled=true` need to be present on the target container.
+
+For example, we want `ofelia` to execute `uname -a` command in the existing container called `my_nginx`.
+To do that, we need to we need to start `my_nginx` container with next configurations:
+
+```sh
+docker run -it --rm \
+    --label ofelia.enabled=true \
+    --label ofelia.job-exec.test-exec-job.schedule="@every 5s" \
+    --label ofelia.job-exec.test-exec-job.command="uname -a" \
+        nginx
+```
+
+Now if we start `ofelia` container with the command provided above, it will pickup 2 jobs:
+
+- Local - `date`
+- Exec  - `uname -a
 
 ### Logging
 **Ofelia** comes with three different logging drivers that can be configured in the `[global]` section:
@@ -88,16 +117,8 @@ This ne
 
 ## Installation
 
-The easiest way to deploy **ofelia** is using *Docker*.
-
-```sh
-docker run -it -v /etc/ofelia:/etc/ofelia -v /var/run/docker.sock:/var/run/docker.sock:ro mcuadros/ofelia:latest
-```
-
-Don't forget to place your `config.ini` at your host machine.
+The easiest way to deploy **ofelia** is using *Docker*. See examples above.
 
 If don't want to run **ofelia** using our *Docker* image you can download a binary from [releases](https://github.com/mcuadros/ofelia/releases) page.
-
-
 
 > Why the project is named Ofelia? Ofelia is the name of the office assistant from the Spanish comic [Mortadelo y Filemón](https://en.wikipedia.org/wiki/Mort_%26_Phil)

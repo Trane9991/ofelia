@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"strings"
+	"time"
 
 	docker "github.com/fsouza/go-dockerclient"
 	"github.com/mitchellh/mapstructure"
@@ -17,6 +18,13 @@ const (
 )
 
 func getLabels(d *docker.Client) (map[string]map[string]string, error) {
+	// sleep before querying containers
+	// because docker not always propagating labels in time
+	// so ofelia app can't find it's own container
+	if IsDockerEnv {
+		time.Sleep(1 * time.Second)
+	}
+
 	conts, err := d.ListContainers(docker.ListContainersOptions{
 		Filters: map[string][]string{
 			"label": []string{requiredLabelFilter},

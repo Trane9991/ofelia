@@ -21,6 +21,9 @@ type DaemonCommand struct {
 
 // Execute runs the daemon
 func (c *DaemonCommand) Execute(args []string) error {
+	_, err := os.Stat("/.dockerenv")
+	IsDockerEnv = !os.IsNotExist(err)
+
 	if err := c.boot(); err != nil {
 		return err
 	}
