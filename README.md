@@ -18,12 +18,19 @@ The main feature of **Ofelia** is the ability to execute commands directly on Do
 ## Configuration
 
 ### Jobs
-It uses a INI-style config file and the [scheduling format](https://godoc.org/github.com/robfig/cron) is exactly the same from the original `cron`, you can configure three different kind of jobs:
+
+[Scheduling format](https://godoc.org/github.com/robfig/cron) is exactly the same from the original `cron`
+
+you can configure four different kind of jobs:
 
 - `job-exec`: this job is executed inside of a running container.
 - `job-run`: runs a command inside of a new container, using a specific image.
 - `job-local`: runs the command inside of the host running ofelia.
 - `job-service-run`: runs the command inside a new "run-once" service, for running inside a swarm
+
+#### INI-style config
+
+Run with `ofelia daemon --config=/path/to/config.ini`
 
 ```ini
 [job-exec "job-executed-on-running-container"]
@@ -50,6 +57,10 @@ command =  touch /tmp/example
 schedule = 0,20,40 * * * *
 service =  my-service
 ```
+
+#### Docker labels configurations
+
+This ne
 
 ### Logging
 **Ofelia** comes with three different logging drivers that can be configured in the `[global]` section:

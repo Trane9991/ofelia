@@ -186,6 +186,14 @@
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
+  version = "v1.1.2"
+
+[[projects]]
   branch = "master"
   digest = "1:41f3b549dbb8216e490c27926c09dc055aa509b3476e7cbc3317103990b13aeb"
   name = "github.com/op/go-logging"
@@ -319,6 +327,7 @@
     "github.com/gobs/args",
     "github.com/jessevdk/go-flags",
     "github.com/mcuadros/go-defaults",
+    "github.com/mitchellh/mapstructure",
     "github.com/op/go-logging",
     "github.com/robfig/cron",
     "gopkg.in/check.v1",
