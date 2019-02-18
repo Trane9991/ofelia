@@ -89,7 +89,7 @@ docker run -it --rm \
 Now if we start `ofelia` container with the command provided above, it will pickup 2 jobs:
 
 - Local - `date`
-- Exec  - `uname -a
+- Exec  - `uname -a`
 
 ### Logging
 **Ofelia** comes with three different logging drivers that can be configured in the `[global]` section:
